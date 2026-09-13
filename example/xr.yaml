@@ -1,0 +1,8 @@
+apiVersion: example.org/v1alpha1
+kind: Application
+metadata:
+  namespace: default
+  name: example
+spec:
+  image: nginx:alpine
+  replicas: 1

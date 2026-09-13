@@ -1,0 +1,44 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: application-deployment
+spec:
+  compositeTypeRef:
+    apiVersion: example.org/v1alpha1
+    kind: Application
+  mode: Pipeline
+  pipeline:
+  - step: create-deployment
+    functionRef:
+      name: function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      kind: GoTemplate
+      source: Inline
+      inline:
+        template: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            annotations:
+              gotemplating.fn.crossplane.io/composition-resource-name: deployment
+            labels:
+              app: {{ .observed.composite.resource.metadata.name }}
+          spec:
+            progressDeadlineSeconds: 5
+            replicas: {{ .observed.composite.resource.spec.replicas | default 1 }}
+            selector:
+              matchLabels:
+                app: {{ .observed.composite.resource.metadata.name }}
+            template:
+              metadata:
+                labels:
+                  app: {{ .observed.composite.resource.metadata.name }}
+              spec:
+                containers:
+                - name: application
+                  image: {{ .observed.composite.resource.spec.image }}
+
+  - step: propagate-kubehealth
+    functionRef:
+      name: function-kubehealth
