@@ -1,0 +1,26 @@
+apiVersion: example.org/v1alpha1
+kind: Application
+metadata:
+  namespace: default
+  name: example
+  generation: 1
+spec:
+  image: nginx:alpine
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: example-deployment
+  generation: 1
+  annotations:
+    crossplane.io/composition-resource-name: deployment
+spec:
+  replicas: 1
+status:
+  observedGeneration: 1
+  replicas: 1
+  updatedReplicas: 1
+  availableReplicas: 1
+  readyReplicas: 1

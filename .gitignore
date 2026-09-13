@@ -1,0 +1,17 @@
+# Binaries and test output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.xpkg
+
+# Local development output
+/build/
+/function-kubehealth
+
+# Go workspace files
+go.work
+go.work.sum

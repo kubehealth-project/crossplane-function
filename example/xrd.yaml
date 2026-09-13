@@ -1,0 +1,115 @@
+apiVersion: apiextensions.crossplane.io/v2
+kind: CompositeResourceDefinition
+metadata:
+  name: applications.example.org
+spec:
+  scope: Namespaced
+  group: example.org
+  names:
+    kind: Application
+    plural: applications
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            required:
+            - image
+            properties:
+              image:
+                type: string
+              replicas:
+                type: integer
+                default: 1
+          status:
+            type: object
+            properties:
+              kubeHealth:
+                type: object
+                required:
+                - contractVersion
+                - observedGeneration
+                - reconciliation
+                - availability
+                - lifecycle
+                properties:
+                  contractVersion:
+                    type: string
+                    enum:
+                    - v1alpha1
+                  observedGeneration:
+                    type: integer
+                    format: int64
+                    minimum: 0
+                  reconciliation:
+                    type: object
+                    required:
+                    - status
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - Reconciled
+                        - InProgress
+                        - Failed
+                        - Suspended
+                        - Unknown
+                        - NotApplicable
+                      reason:
+                        type: string
+                        maxLength: 1024
+                        pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                      message:
+                        type: string
+                        maxLength: 32768
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                  availability:
+                    type: object
+                    required:
+                    - status
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - Available
+                        - PartiallyAvailable
+                        - Unavailable
+                        - Unknown
+                        - NotApplicable
+                      reason:
+                        type: string
+                        maxLength: 1024
+                        pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                      message:
+                        type: string
+                        maxLength: 32768
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                  lifecycle:
+                    type: object
+                    required:
+                    - status
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - Active
+                        - Terminating
+                      reason:
+                        type: string
+                        maxLength: 1024
+                        pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                      message:
+                        type: string
+                        maxLength: 32768
+                      lastTransitionTime:
+                        type: string
+                        format: date-time

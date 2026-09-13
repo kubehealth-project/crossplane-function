@@ -1,0 +1,82 @@
+version: "2"
+
+linters:
+  default: all
+  disable:
+    - cyclop
+    - depguard
+    - err113
+    - exhaustive
+    - exhaustruct
+    - exhaustruct_v5
+    - funcorder
+    - funlen
+    - gocognit
+    - gocyclo
+    - gochecknoglobals
+    - goconst
+    - gomodguard
+    - godox
+    - ireturn
+    - inamedparam
+    - lll
+    - maintidx
+    - mnd
+    - nestif
+    - nilnil
+    - nlreturn
+    - noinlineerr
+    - nonamedreturns
+    - paralleltest
+    - perfsprint
+    - protogetter
+    - tagalign
+    - testpackage
+    - unparam
+    - varnamelen
+    - wrapcheck
+    - wsl
+    - wsl_v5
+  settings:
+    govet:
+      disable:
+        - shadow
+    tagliatelle:
+      case:
+        rules:
+          json: goCamel
+  exclusions:
+    generated: lax
+    rules:
+      - linters:
+          - errcheck
+          - forcetypeassert
+          - gosec
+        path: _test\.go
+      - linters:
+          - gosec
+        text: 'G101:'
+      - linters:
+          - gosec
+        text: 'G104:'
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/crossplane/function-sdk-go)
+        - prefix(github.com/kubehealth-project/function-kubehealth)
+        - blank
+        - dot
+      custom-order: true
