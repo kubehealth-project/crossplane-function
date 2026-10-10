@@ -30,25 +30,30 @@ func TestRunFunctionDeploymentHealth(t *testing.T) {
 		observed  *unstructured.Unstructured
 		wantRec   kubehealth.ReconciliationStatus
 		wantAvail kubehealth.AvailabilityStatus
+		wantLife  kubehealth.LifecycleStatus
 	}{
 		"desired resource not observed": {
 			wantRec:   kubehealth.ReconciliationInProgress,
 			wantAvail: kubehealth.AvailabilityUnknown,
+			wantLife:  kubehealth.LifecycleInitializing,
 		},
 		"failed initial rollout": {
 			observed:  deployment("broken", 1, 1, 1, 0, true),
 			wantRec:   kubehealth.ReconciliationFailed,
 			wantAvail: kubehealth.AvailabilityUnavailable,
+			wantLife:  kubehealth.LifecycleActive,
 		},
 		"healthy rollout": {
 			observed:  deployment("healthy", 1, 1, 1, 1, false),
 			wantRec:   kubehealth.ReconciliationReconciled,
 			wantAvail: kubehealth.AvailabilityAvailable,
+			wantLife:  kubehealth.LifecycleActive,
 		},
 		"failed update remains available": {
 			observed:  deployment("broken-update", 2, 2, 1, 1, true),
 			wantRec:   kubehealth.ReconciliationFailed,
 			wantAvail: kubehealth.AvailabilityAvailable,
+			wantLife:  kubehealth.LifecycleActive,
 		},
 	}
 
@@ -71,8 +76,8 @@ func TestRunFunctionDeploymentHealth(t *testing.T) {
 			if got := healthDimension(t, health, "availability", "status"); got != string(tc.wantAvail) {
 				t.Fatalf("availability = %q, want %q", got, tc.wantAvail)
 			}
-			if got := healthDimension(t, health, "lifecycle", "status"); got != string(kubehealth.LifecycleActive) {
-				t.Fatalf("lifecycle = %q, want %q", got, kubehealth.LifecycleActive)
+			if got := healthDimension(t, health, "lifecycle", "status"); got != string(tc.wantLife) {
+				t.Fatalf("lifecycle = %q, want %q", got, tc.wantLife)
 			}
 		})
 	}
@@ -129,6 +134,9 @@ func TestRunFunctionAggregationAndChildSelection(t *testing.T) {
 		}
 		if got := healthDimension(t, health, "reconciliation", "reason"); got != kubeHealthChildrenPendingReason {
 			t.Fatalf("reason = %q, want %q", got, kubeHealthChildrenPendingReason)
+		}
+		if got := healthDimension(t, health, "lifecycle", "status"); got != string(kubehealth.LifecycleInitializing) {
+			t.Fatalf("lifecycle = %q, want %q", got, kubehealth.LifecycleInitializing)
 		}
 	})
 

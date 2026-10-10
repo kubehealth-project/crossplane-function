@@ -101,6 +101,7 @@ spec:
                       status:
                         type: string
                         enum:
+                        - Initializing
                         - Active
                         - Terminating
                       reason:

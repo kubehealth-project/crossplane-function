@@ -11,7 +11,7 @@ KubeHealth represents resource health as three independent dimensions:
 
 - Reconciliation - whether the resource reached its latest desired state
 - Availability - whether the resource currently provides its capability
-- Lifecycle - whether the resource is active or terminating
+- Lifecycle - whether the resource is initializing, active, or terminating
 
 A failed rollout can therefore remain available while its previous revision is
 still serving:
@@ -105,6 +105,7 @@ complete field.
 
 - The final desired resource map defines the expected child set.
 - A desired resource that is not observed yet is `InProgress + Unknown`.
+- A composite with pending desired resources reports lifecycle `Initializing`.
 - A desired and observed resource with different GVKs is treated as pending.
 - Observed resources absent from final desired state are ignored.
 - Child reconciliation and availability use KubeHealth's standard aggregation.

@@ -146,6 +146,13 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1.RunFunctionRequest) 
 			"The composite resource is terminating",
 			now,
 		)
+	} else if pendingCount > 0 {
+		health.SetLifecycleAt(
+			kubehealth.LifecycleInitializing,
+			kubeHealthChildrenPendingReason,
+			"The composite resource is waiting for composed resources to be observed",
+			now,
+		)
 	} else {
 		health.SetLifecycleAt(
 			kubehealth.LifecycleActive,
@@ -237,7 +244,7 @@ func pendingAssessment(name string) kubehealth.Assessment {
 			Status: kubehealth.AvailabilityUnknown,
 		},
 		Lifecycle: kubehealth.Dimension[kubehealth.LifecycleStatus]{
-			Status: kubehealth.LifecycleActive,
+			Status: kubehealth.LifecycleInitializing,
 		},
 	}
 }
