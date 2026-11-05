@@ -6,7 +6,7 @@ DOCKER ?= docker
 PYTHON ?= python3
 
 BUILD_DIR := $(CURDIR)/build
-FUNCTION_IMAGE ?= function-kubehealth:local
+FUNCTION_IMAGE ?= crossplane-function:local
 
 test: test-unit test-render
 
@@ -44,4 +44,4 @@ package: image
 	$(CROSSPLANE) xpkg build \
 		--package-root package \
 		--embed-runtime-image "$(FUNCTION_IMAGE)" \
-		--package-file "$(BUILD_DIR)/function-kubehealth.xpkg"
+		--package-file "$(BUILD_DIR)/crossplane-function.xpkg"

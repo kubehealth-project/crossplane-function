@@ -1,8 +1,8 @@
-# function-kubehealth
+# crossplane-function
 
-[![CI](https://github.com/kubehealth-project/function-kubehealth/actions/workflows/ci.yml/badge.svg)](https://github.com/kubehealth-project/function-kubehealth/actions/workflows/ci.yml)
+[![CI](https://github.com/kubehealth-project/crossplane-function/actions/workflows/ci.yml/badge.svg)](https://github.com/kubehealth-project/crossplane-function/actions/workflows/ci.yml)
 
-`function-kubehealth` is a Crossplane Composition Function that assesses
+`crossplane-function` is a Crossplane Composition Function that assesses
 composed resources with the shared [KubeHealth][kubehealth] library and
 publishes an aggregate report on the composite resource at
 `status.kubeHealth`.
@@ -37,9 +37,9 @@ Once a release is available, install the Function package from GHCR:
 apiVersion: pkg.crossplane.io/v1
 kind: Function
 metadata:
-  name: function-kubehealth
+  name: crossplane-function
 spec:
-  package: ghcr.io/kubehealth-project/function-kubehealth:v0.1.0
+  package: ghcr.io/kubehealth-project/crossplane-function:v0.1.0
 ```
 
 The initial implementation has not been released yet. Until then, use a local
@@ -47,7 +47,7 @@ package build as described under [Development](#development).
 
 ## Use
 
-Place `function-kubehealth` after all resource-producing functions and after
+Place `crossplane-function` after all resource-producing functions and after
 any other function that writes composite status:
 
 ```yaml
@@ -90,7 +90,7 @@ spec:
                   image: nginx:alpine
   - step: propagate-kubehealth
     functionRef:
-      name: function-kubehealth
+      name: crossplane-function
 ```
 
 The XRD must declare `status.kubeHealth`. A complete schema is included in
@@ -151,7 +151,7 @@ Build the non-root runtime image and Crossplane package:
 make package
 ```
 
-The package is written to `build/function-kubehealth.xpkg`. The CI workflow
+The package is written to `build/crossplane-function.xpkg`. The CI workflow
 builds amd64 and arm64 packages. Pushes to `main` publish a development package
 to GHCR using a pseudo-version. A manually supplied workflow version can be
 used for a release package.

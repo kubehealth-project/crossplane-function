@@ -1,11 +1,11 @@
-module github.com/kubehealth-project/function-kubehealth
+module github.com/kubehealth-project/crossplane-function
 
 go 1.26.0
 
 require (
 	github.com/alecthomas/kong v1.14.0
 	github.com/crossplane/function-sdk-go v0.7.1
-	github.com/kubehealth-project/kubehealth v0.0.0-20260913155506-ab03d335fe3f
+	github.com/kubehealth-project/kubehealth v0.0.0-20261105151434-5bc52e0626f3
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 	k8s.io/apimachinery v0.36.1
 )

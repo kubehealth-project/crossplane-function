@@ -10,7 +10,7 @@
 
 # Local development output
 /build/
-/function-kubehealth
+/crossplane-function
 
 # Go workspace files
 go.work

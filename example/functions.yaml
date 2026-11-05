@@ -8,9 +8,9 @@ spec:
 apiVersion: pkg.crossplane.io/v1
 kind: Function
 metadata:
-  name: function-kubehealth
+  name: crossplane-function
   annotations:
     render.crossplane.io/runtime: Development
     render.crossplane.io/runtime-development-target: localhost:9444
 spec:
-  package: function-kubehealth:development
+  package: crossplane-function:development

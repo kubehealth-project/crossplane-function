@@ -1,10 +1,10 @@
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Function
 metadata:
-  name: function-kubehealth
+  name: crossplane-function
   annotations:
     meta.crossplane.io/maintainer: KubeHealth Maintainers
-    meta.crossplane.io/source: github.com/kubehealth-project/function-kubehealth
+    meta.crossplane.io/source: github.com/kubehealth-project/crossplane-function
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: Propagates composed resource health to status.kubeHealth on a Crossplane composite resource.
     meta.crossplane.io/readme: |
@@ -12,7 +12,7 @@ metadata:
       resources with the shared KubeHealth library and publishes independent
       reconciliation, availability, and lifecycle dimensions to the composite
       resource. See the
-      [README](https://github.com/kubehealth-project/function-kubehealth)
+      [README](https://github.com/kubehealth-project/crossplane-function)
       for examples and documentation.
 spec:
   capabilities:
