@@ -139,21 +139,22 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1.RunFunctionRequest) 
 	now := f.now()
 	health.SetReconciliationAt(aggregated.Reconciliation, reconciliationReason, reconciliationMessage, now)
 	health.SetAvailabilityAt(aggregated.Availability, availabilityReason, availabilityMessage, now)
-	if observedXR.Resource.GetDeletionTimestamp() != nil {
+	switch {
+	case observedXR.Resource.GetDeletionTimestamp() != nil:
 		health.SetLifecycleAt(
 			kubehealth.LifecycleTerminating,
 			kubeHealthTerminatingReason,
 			"The composite resource is terminating",
 			now,
 		)
-	} else if pendingCount > 0 {
+	case pendingCount > 0:
 		health.SetLifecycleAt(
 			kubehealth.LifecycleInitializing,
 			kubeHealthChildrenPendingReason,
 			"The composite resource is waiting for composed resources to be observed",
 			now,
 		)
-	} else {
+	default:
 		health.SetLifecycleAt(
 			kubehealth.LifecycleActive,
 			kubeHealthActiveReason,
